@@ -1,48 +1,81 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import './App.css'
-import WeatherCard from './components/WeatherCard'
+import axios from "axios"
+import { useEffect, useState } from "react"
+import Loader from './components/Loader'
+import Card from "./components/Card"
+import Navbar from "./components/Navbar"
 
 function App() {
-  const [coords, setCoords] = useState()
-  const [weather, setWeather] = useState()
-  const [temp, setTemp] = useState()
+  const gKelvin=273.15
+  const gCelsius=32
 
-  const success = pos => {
+  const [dataLocation, setDataLocation] = useState();
 
-  setCoords({
-    lat: pos.coords.latitude,
-    lon: pos.coords.longitude,
-  })
-}
-console.log(coords)
+  const [cityOut, setCityOut] = useState("");
 
-useEffect(() => {
-  navigator.geolocation.getCurrentPosition(success)
-}, [])
-useEffect(() => {
-  if(coords){
-    const apiKey = 'f9ea51ff96a4f79e1f09293a1e954e66'
-    const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}`
-    axios.get(URL)
-      .then(res => {
-        setWeather(res.data)
-        const celsius = (res.data.main.temp - 273.15).toFixed(1)
-        const farenheit = (celsius * 9/5 + 32).toFixed(1)
-        setTemp({celsius,farenheit})
-      })
-      .catch(err => console.log(err))
+  function getDataApi(pos) {
+    const apiKey = "3d4d4c76fb1582845f71adcd7204d89e";
+    let api = "https://api.openweathermap.org/data/2.5/weather";
+    (pos.coords === undefined ) ? api = `${api}?q=${pos}&appid=${apiKey}&lang=es`: 
+    api = `${api}?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=${apiKey}&lang=es`;
+    axios.get(api)
+         .then((res) => {
+          setDataLocation({
+          dataLocation: res.data,
+          grades: {
+            celsiu: res.data.main.temp - gKelvin,
+            farenheit: 1.8 * (res.data.main.temp - gKelvin) + gCelsius,
+                  },
+                        });
+                        })
+         .catch((err) => console.error(err));
   }
-}, [coords])
 
-console.log(weather);
+  const getCoordinates = async (dataLocation = null) => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+
+    if (dataLocation) {
+      getDataApi(dataLocation);
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        getDataApi,
+        (err) => {
+          console.error(err);
+        },
+        options
+      );
+    }
+  };
+
+  const getCityOut = (a) => {
+    setCityOut(a);
+  };
+
+  useEffect(() => {
+    getCoordinates(cityOut);
+  }, [cityOut]);
+
+  useEffect(() => {
+    getCoordinates();
+  }, []);
+    
   return (
-    <div className="App">
-    <WeatherCard 
-      weather={weather}
-      temp={temp}
-    />
-    </div>
+    <>
+    {dataLocation ? (
+        <div className="container">
+          <Navbar valueOut={getCityOut} />
+          <div>
+            <Card dataLocation={dataLocation} />
+          </div>
+        </div>
+      ) : (
+        <Loader/>
+      )}
+
+    </>
   )
 }
 

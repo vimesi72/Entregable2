@@ -1,69 +1,156 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+:root{
+  --bg-color : radial-gradient(#acdef1, #219adb);
+  --bg-card-color : linear-gradient(#acdef1 0 0% , #acdef1 0 97.4% );
+  --bg-btn-color : #219adb;
+  --text-card-color : rgb(38, 44, 80);
+  --bs-card-color : rgb(22, 69, 170);
+  --text-nav-color : #283c80;
 }
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+*{
+  padding: 0;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  box-sizing: inherit;
+  font-family: 'Times New Roman', Times, serif;
+}
+body{
+  background: var(--bg-color)
+
+}
+.container {
+  display: grid;
+  height: 100vh;
+  align-items: center;
+  justify-items: center;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.card {
+  color: var(--text-card-color);
+  columns: 2;
+  padding-left: 18px;
+  background: var(--bg-card-color);
+  border-radius: 10px;
+  width: 23rem;
+  height: 12rem;
+  box-shadow:  0px 4px 6px 3px var(--bs-card-color);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.card h1{
+  margin-top: 10px;
+  font-size: 3.8rem;
+}
+
+.card h2{
+  margin-top: 1rem;
+  justify-content: end;
+  font-size: 1.1rem;
+}
+.card img {
+  position: relative;
+  margin-top: -40px;
+  width: 90%;
+  z-index: 2;
+}
+.card h3{
+  font-size: 1rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+.card-btn button{
+  width: 178px;
+  height: 38px;
+  background: var(--bg-btn-color);
+  color: var(--text-nav-color);
+  border-radius: 15px;
+  margin-top: 45px ;
+  translate: 56%;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.card-btn button:hover{
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+ .header {
+  position: fixed;
+  top: 20px;
+  width: 80%;
+  background: transparent;
+}
+
+.nav {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav__logo {
+  text-decoration: none;
+  color: rgb(96, 97, 177);
+  font-size: 22px;
+}
+.nav__menu{
+  position: relative;
+}
+.nav__menu input {
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+  translate: -3.6rem;
+  width: 21rem;
+  background-color: var(--bg-btn-color);
+  color: #5a66ca;
+}
+.nav__menu input::placeholder {
+  color: #acdef1;
+}
+.nav__buttons button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  user-select: none;
+  font-size: 20px;
+  color: var(--text-card-color);
+}
+
+.center-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.nav__btn i{
+  font-size: 1.25rem;
+  color: var(--title-color);
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root.dark{
+    --bg-color : radial-gradient(#544479, #271e5c);
+    --bg-card-color : linear-gradient(#6c40e6 0 0% , #28198a 0 97.4% );
+    --bg-btn-color : #7d69f1;
+    --text-card-color: white;
+    --bs-card-color: #2f2568;
+    --text-nav-color: white;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+ }
+
+ @media (max-width: 736px) {
+  /* … */
+  .nav__menu input {
+    position: absolute;
+    top: 30px;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    translate: -14.3rem;
+    width: 21rem;
+    background-color: var(--bg-btn-color);
+    color: #d5f3ff;
   }
 }
